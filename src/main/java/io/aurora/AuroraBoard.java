@@ -1,7 +1,6 @@
 package io.aurora;
 
 import io.aurora.util.Color;
-import io.aurora.util.ConfigUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -9,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.*;
 
@@ -38,8 +38,9 @@ public class AuroraBoard extends JavaPlugin implements Listener {
     public void onEnable() {
         LOGGER.info(Color.YELLOW + "[Aurora] " + Color.RESET + "Plugin is enabled.");
         getServer().getPluginManager().registerEvents(this, this);
-
-        ConfigUtil config = new ConfigUtil("config.yml");
+        getConfig().options().copyDefaults(true);
+        saveDefaultConfig();
+        Plugin config = AuroraBoard.getPlugin(AuroraBoard.class);
 
         manager = Bukkit.getScoreboardManager();
         board = manager.getNewScoreboard();
