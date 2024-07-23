@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.*;
 
@@ -20,6 +21,8 @@ public final class AuroraBoard extends JavaPlugin implements Listener {
     private ScoreboardManager manager;
     private Scoreboard board;
     private Objective objective;
+    static Plugin config = AuroraBoard.getPlugin(AuroraBoard.class);
+    private static final String name = config.getConfig().getString("name");
 
     @Override
     public void onLoad() {
@@ -29,11 +32,13 @@ public final class AuroraBoard extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         LOGGER.info(Color.YELLOW + "[Aurora] " + Color.RESET + "Plugin is enabled.");
+        getConfig().options().copyDefaults(true);
+        saveDefaultConfig();
         getServer().getPluginManager().registerEvents(this, this);
 
         manager = Bukkit.getScoreboardManager();
         board = manager.getNewScoreboard();
-        objective = board.registerNewObjective("blockCount", "dummy", "Block Counter");
+        objective = board.registerNewObjective("blockCount", "dummy", name);
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
     }
 
