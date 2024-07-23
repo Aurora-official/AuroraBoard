@@ -12,6 +12,7 @@ import org.bukkit.scoreboard.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public final class AuroraBoard extends JavaPlugin implements Listener {
@@ -21,8 +22,6 @@ public final class AuroraBoard extends JavaPlugin implements Listener {
     private ScoreboardManager manager;
     private Scoreboard board;
     private Objective objective;
-    static Plugin config = AuroraBoard.getPlugin(AuroraBoard.class);
-    private static final String name = config.getConfig().getString("name");
 
     @Override
     public void onLoad() {
@@ -32,13 +31,12 @@ public final class AuroraBoard extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         LOGGER.info(Color.YELLOW + "[Aurora] " + Color.RESET + "Plugin is enabled.");
-        getConfig().options().copyDefaults(true);
-        saveDefaultConfig();
         getServer().getPluginManager().registerEvents(this, this);
+        Plugin config = AuroraBoard.getPlugin(AuroraBoard.class);
 
         manager = Bukkit.getScoreboardManager();
         board = manager.getNewScoreboard();
-        objective = board.registerNewObjective("blockCount", "dummy", name);
+        objective = board.registerNewObjective("blockCount", "dummy", Objects.requireNonNull(config.getConfig().getString("name")));
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
     }
 
