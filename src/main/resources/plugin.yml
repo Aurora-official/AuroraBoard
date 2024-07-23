@@ -1,5 +1,5 @@
 name: AuroraBoard
-version: '1.0-SNAPSHOT'
+version: '${version}'
 main: io.aurora.AuroraBoard
 api-version: '1.20'
 authors: [ Aurora ]
